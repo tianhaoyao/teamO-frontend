@@ -25,7 +25,7 @@
     "serialize-javascript": "^3.1.0"
   },
   "scripts": {
-    "start": "cd src/backend && yarn install && node app.js",
+    "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
