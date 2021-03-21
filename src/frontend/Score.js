@@ -6,7 +6,6 @@ import {Grid} from '@material-ui/core'
 import { updatePlayer } from '../actions';
 import { useDispatch } from 'react-redux';
 import * as rankData from './settings/ranks.json';
-import * as easteregg from './settings/easteregg.json';
 import StatsGraph from './StatsGraph';
 
 function Score(props) {
@@ -118,8 +117,6 @@ function Score(props) {
         else if (props.pref == "TOP" && kpbonus <= 0) {
             kpbonus *= 0.4;
         }
-
-        console.log("kp:" + props.kpS);
 
         if(Number.isNaN(kpbonus)) {
             kpbonus = 0;
@@ -239,17 +236,7 @@ function Score(props) {
             }
         }
 
-
-        if(easteregg.descriptors[props.name]) {
-            descriptor = easteregg.descriptors[props.name];
-        }
-
         bonus = csbonus + kdabonus + kpbonus + goldbonus + dmgbonus;
-        // console.log("kdabonus for " + props.kda + ": " + kdabonus);
-        // console.log("csbonus for " + props.cspm + ": " + csbonus);
-        // console.log("kpbonus for " + props.kpS + ": " + kpbonus);
-        // console.log("goldbonus for " + props.goldS + ": " + goldbonus);
-        // console.log("dmgbonus for " + props.dmgS + ": " + dmgbonus);
         
         return [bonus, descriptor, [csbonus, kdabonus, kpbonus, goldbonus, dmgbonus]];
     }

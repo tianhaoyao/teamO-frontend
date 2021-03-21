@@ -1,14 +1,13 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import Button from '@material-ui/core/Button';
 
-import {Grid, Card, CardActionArea, CardContent, Typography, TextField, CircularProgress} from '@material-ui/core'
+import {Grid, Card, CardActionArea, CardContent, TextField, CircularProgress} from '@material-ui/core'
 
 import Score from './Score';
 import Icons from './Icons';
 
 const NUM_RECENT_MATCH = 3;
-const BACKEND_URL = 'https://team-sort.herokuapp.com/';
+const BACKEND_URL = 'http://localhost:3001/' //'https://team-sort.herokuapp.com/';
 
 class Profile extends React.Component {
   constructor(props) {
@@ -39,19 +38,15 @@ class Profile extends React.Component {
 
   getCache = async () => {
     const url = BACKEND_URL + `cache/${this.state.query}/`;
-    console.log(url)
     try{
       const response = await fetch(url);
       const data = await response.json();
-      console.log(data)
       if(Object.keys(data).length != 0) {
-        console.log("found")
         this.setState({ cached: true })
         this.setUsingCache(data);
         return data;
       }
       else {
-        console.log("notfound")
         this.setState({ cached: false })
         this.getRank();
         this.getRole();
@@ -65,6 +60,7 @@ class Profile extends React.Component {
 
   insertCache = (name, tier, rank, lp, cs, kda, dmg, gold, kp, pref1, pref2) => {
     const url = BACKEND_URL + `insertcache/`;
+    const simplename = name.replace(/\s+/g, '').toLowerCase();
     const res = fetch(url, {
       method: 'POST',
       headers: {
@@ -73,6 +69,7 @@ class Profile extends React.Component {
       },
       body: JSON.stringify({
         name: name,
+        simplename: simplename,
         tier: tier,
         rank: rank,
         lp: lp,
@@ -164,7 +161,6 @@ class Profile extends React.Component {
       }
     }
     catch(err){
-        console.log("getrank err")
         console.log(err)
         this.setState({submitted: false})
     }
@@ -284,7 +280,6 @@ class Profile extends React.Component {
       }
       catch(err) {
         console.log(err);
-        console.log("errr")
       }
     }
 
@@ -383,7 +378,6 @@ class Profile extends React.Component {
       height: "100%",
 
     };
-    console.log(this.state)
     if(!this.state.cached) {
       if(summonerName != null && tier != null && lp != null && cspm != null && kda != null && prefRole != null && prefRole2 != null && role != null) {
         this.setState({cached: true})

@@ -14,7 +14,6 @@ function StatsGraph(props) {
             height: 1000,
             width: 1000,
             type: 'radar',
-            //background: '#fff',
             toolbar:{
                 show: false
             }
