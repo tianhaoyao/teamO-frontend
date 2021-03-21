@@ -7,7 +7,7 @@ import Score from './Score';
 import Icons from './Icons';
 
 const NUM_RECENT_MATCH = 3;
-const BACKEND_URL = 'http://localhost:3001/' //'https://team-sort.herokuapp.com/';
+const BACKEND_URL = 'https://team-sort.herokuapp.com/';
 
 class Profile extends React.Component {
   constructor(props) {
