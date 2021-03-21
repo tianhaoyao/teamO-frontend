@@ -1,5 +1,5 @@
 
-# TeamO
+# TeamO (frontend)
 
 React Webapp that divides summoners into even teams. Frontend using Material-UI. Backend using Node, Express, MongoDB/Mongoose. Calls Riot-API. Uses Redux to keep states for players.
 
@@ -64,11 +64,10 @@ Models constraint satisfaction problems (CSP).
 ## Running the Program
 
 ```
-$ git clone https://github.com/tianhaoyao/teamO.git
-$ cd teamO
+$ git clone https://github.com/tianhaoyao/teamO-frontend.git
+$ cd teamO-frontend
 $ yarn install
 $ yarn start
 ```
-RiotGames API key required in .env file
 
 # teamO
