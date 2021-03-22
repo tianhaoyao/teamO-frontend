@@ -16,9 +16,9 @@ function Icons(props){
     return(
         <div>
             {props.tier === "UNRANKED" ?
-                <img style={style} src={`//opgg-static.akamaized.net/images/medals/default.png?image=q_auto&v=1`}></img>
+                <img style={style} src={require(`./resources/ranks/default.png`)}></img>
             :
-                <img style={style} src={`//opgg-static.akamaized.net/images/medals/${props.tier}_${divisionLookup[props.division]}.png?image=q_auto&v=1`}></img>
+                <img style={style} src={require(`./resources/ranks/${props.tier}_${divisionLookup[props.division]}.png`)}></img>
             }
         </div>
     );
