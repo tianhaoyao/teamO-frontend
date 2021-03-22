@@ -46,7 +46,7 @@ function Results(props) {
         }
         else {
           //red team, light, picked
-          color = "#FF6699";
+          color = "#E55B89";
         }
         
       }
@@ -57,7 +57,7 @@ function Results(props) {
         }
         else {
           //red team, light, empty
-          color = "#ff96ad";
+          color = "#FF6699";
         }
         
       }
@@ -70,7 +70,7 @@ function Results(props) {
       }
       else{
         //blue team, light, picked
-        color = "#66B3FF"
+        color = "#5BA1E5"
       }
       
     }
@@ -81,7 +81,7 @@ function Results(props) {
       }
       else{
         //blue team, light, empty
-        color = "#9ecfff";
+        color = "#66B3FF";
       }
       
     }

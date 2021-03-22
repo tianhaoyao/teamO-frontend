@@ -3,7 +3,7 @@ import logo from './resources/teamo.png'
 import ReactDOM from 'react-dom';
 
 
-import {Container, Grid, Divider, Switch, Typography, ThemeProvider, TextField, Button} from '@material-ui/core'
+import {Container, Grid, Divider, Switch, Typography, ThemeProvider, TextField, Button, Tooltip} from '@material-ui/core'
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import CssBaseline from "@material-ui/core/CssBaseline";
 
@@ -100,13 +100,28 @@ function App(){
         
         <Container maxWidth="md"> 
           <Grid container item xs={12} justify="center">
+            
             <img src={logo}></img>
-            <Switch onChange={changeNight}/>
+            
+            
           </Grid>
+          <Grid container item xs={12} justify="center">
+            <Tooltip title="Toggle Dark Mode" placement="bottom">
+              <Switch onChange={changeNight}/>
+            </Tooltip>
+
+          </Grid>
+
           {!multiSub ? 
             <form className="multisearch" onSubmit={handleSubmit}>
-              <TextField id="standard-basic" label="Multi Search" onChange={handleChange} fullWidth="true" defaultValue={query}/>
-              <Button type="submit">Submit</Button>
+                <TextField 
+                  id="standard-basic" 
+                  label="Multi Search (separate names with commas)" 
+                  onChange={handleChange} 
+                  fullWidth="true" 
+                  defaultValue={query} 
+                  InputProps={{endAdornment: <Button type="submit">Submit</Button>}}
+                />
             </form>
             : <br/>
           } 
@@ -163,6 +178,16 @@ function App(){
         </Container>
         
         <Show theme={night}/>
+        <br/>
+
+        <Container maxWidth="md"> 
+          <Grid container item xs={12} justify="left">
+            <Typography variant="caption" color="textSecondary" component="p">You can find the github repository <a href="https://github.com/tianhaoyao/teamO">here</a>. This app was written by <a href="https://tianhaoyao.github.io/">this guy</a>.</Typography>
+            <Typography variant="caption" color="textSecondary" component="p">© 2021 TeamO. TeamO isn't endorsed by Riot Games and doesn't reflect the views or opinions of Riot Games or anyone officially involved in producing or managing League of Legends. League of Legends and Riot Games are trademarks or registered trademarks of Riot Games, Inc. League of Legends © Riot Games, Inc.
+            </Typography>
+          </Grid>
+        </Container>
+
         </ThemeProvider>
       </div>
     );

@@ -184,57 +184,29 @@ function Score(props) {
         let goldbonus = getGoldBonus();
         
         let bestAspect = Math.max(csbonus, kdabonus, kpbonus, goldbonus, dmgbonus);
-        let worstAspect = Math.min(csbonus, kdabonus, kpbonus, goldbonus, dmgbonus);
+        
+        switch(bestAspect) {
+            case csbonus:
+                descriptor = "CS King";
+                break;
 
-        if(worstAspect <= 0) {
+            case kdabonus:
+                descriptor = "KDA Prodigy";
+                break;
 
-            switch(worstAspect) {
-                case csbonus:
-                    descriptor = "Bad CS";
-                    break;
+            case kpbonus:
+                descriptor = "Mr.Worldwide";
+                break;
+        
+            case goldbonus:
+                descriptor = "Bill Gates";
+                break;
 
-                case kdabonus:
-                    descriptor = "Bad KDA";
-                    break;
-    
-                case kpbonus:
-                    descriptor = "Lane Quarantine";
-                    break;
-            
-                case goldbonus:
-                    descriptor = "Poverty";
-                    break;
-
-                case dmgbonus: 
-                    descriptor = "Pacifist";
-                    break;
-            }
-            
+            case dmgbonus: 
+                descriptor = "Aggressive";
+                break;
         }
         
-        else {
-            switch(bestAspect) {
-                case csbonus:
-                    descriptor = "CS King";
-                    break;
-
-                case kdabonus:
-                    descriptor = "KDA";
-                    break;
-    
-                case kpbonus:
-                    descriptor = "Mr.Worldwide";
-                    break;
-            
-                case goldbonus:
-                    descriptor = "Bill Gates";
-                    break;
-
-                case dmgbonus: 
-                    descriptor = "Aggressive";
-                    break;
-            }
-        }
 
         bonus = csbonus + kdabonus + kpbonus + goldbonus + dmgbonus;
         
