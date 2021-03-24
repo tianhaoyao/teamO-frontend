@@ -1,11 +1,11 @@
 
 # TeamO (frontend)
 
-React Webapp that divides summoners into even teams. Frontend using Material-UI. Backend using Node, Express, MongoDB/Mongoose. Calls Riot-API. Uses Redux to keep states for players.
+React Webapp that divides summoners into even teams, deployed on AWS Amplify & Heroku. Frontend using Material-UI. Backend using Node, Express, MongoDB/Mongoose. Calls Riot-API. Uses Redux to keep states for players.
 
 __This repository serves as the frontend for the project. You can find the backend repo here: https://github.com/tianhaoyao/teamO__
 
-Try it out here: https://teem0.herokuapp.com/
+Try it out here: https://www.teamoo.tk/
 
 ## How it works
 
