@@ -1,13 +1,10 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 
 import {Grid, Card, Typography, CardActionArea, CardContent} from '@material-ui/core'
 
 
 import {useSelector} from 'react-redux';
 import Icons from './Icons';
-import scoreReducer from './reducers/scoreCollection';
-import teamReducer from './reducers/teamReducer';
 
 import top from './resources/TOP.png';
 import jungle from './resources/JUNGLE.png';
@@ -34,9 +31,10 @@ function Results(props) {
       case "4":
         position = support;
         break;
+      default:
+        position = support;
    }
 
-   let show = false;
    let color;
    if(props.team === "1") {
       if((typeof teams[props.team] !== "undefined" && teams[props.team][props.pos] !== "-")) {
@@ -140,7 +138,7 @@ function Results(props) {
 
                   </Grid>
                   <Grid item xs={12} sm={2}>
-                    <img src={position} style={{width:50}}/>
+                    <img src={position} style={{width:50}} alt="Position"/>
                   </Grid>
  
                 </Grid>

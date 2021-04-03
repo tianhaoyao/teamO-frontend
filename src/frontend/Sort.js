@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import {update, updateTeam, updateTotal} from '../actions';
+import React from 'react';
+import {updateTeam, updateTotal} from '../actions';
 
 import {useSelector} from 'react-redux';
 import {useDispatch} from 'react-redux';
-import scoreReducer from './reducers/scoreCollection';
 
 function Sort() {
     const dispatch = useDispatch();
@@ -13,7 +12,6 @@ function Sort() {
     let sortedArray = [];
     let team = [['-', '-', '-', '-', '-'], ['-', '-', '-', '-', '-']];
     let extras = [];
-    let extraSlots = [];
     let teamScore = [0, 0];
 
 
@@ -103,21 +101,6 @@ function Sort() {
         return slots;
     }
 
-    function getRemainingSpotsForBoth() {
-        let slots = [[],[]]
-        for (let i = 0; i < team[0].length; i++) {
-            if(team[0][i] === "-") {
-                slots[0].push(i);
-            }
-        }
-        for (let i = 0; i < team[1].length; i++) {
-            if(team[1][i] === "-") {
-                slots[1].push(i);
-            }
-        }
-        return slots;
-    }
-
     function sortTeam() {
         
 
@@ -137,8 +120,6 @@ function Sort() {
             else {
                 extras.push(sortedArray[i]);
             }
-
-            extraSlots = getRemainingSpotsForBoth();
 
         }
 

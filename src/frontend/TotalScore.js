@@ -1,12 +1,8 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 
 import {Grid, Typography} from '@material-ui/core'
 
 import {useSelector} from 'react-redux';
-import scoreReducer from './reducers/scoreCollection';
-import teamReducer from './reducers/teamReducer';
-import teamTotal from './reducers/teamTotal';
 
 function TotalScore(){
   

@@ -6,7 +6,7 @@ import {Grid, Card, CardActionArea, CardContent, TextField, CircularProgress} fr
 import Score from './Score';
 import Icons from './Icons';
 
-const NUM_RECENT_MATCH = 3;
+const NUM_RECENT_MATCH = 7;
 const BACKEND_URL = 'https://team-sort.herokuapp.com/';
 
 class Profile extends React.Component {
@@ -41,7 +41,7 @@ class Profile extends React.Component {
     try{
       const response = await fetch(url);
       const data = await response.json();
-      if(Object.keys(data).length != 0) {
+      if(Object.keys(data).length !== 0) {
         this.setState({ cached: true })
         this.setUsingCache(data);
         return data;
@@ -61,7 +61,7 @@ class Profile extends React.Component {
   insertCache = (name, tier, rank, lp, cs, kda, dmg, gold, kp, pref1, pref2) => {
     const url = BACKEND_URL + `insertcache/`;
     const simplename = name.replace(/\s+/g, '').toLowerCase();
-    const res = fetch(url, {
+    fetch(url, {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
@@ -115,7 +115,9 @@ class Profile extends React.Component {
     
       const data = await response.json();
       let profile = {...this.state.profile}
+      
       profile.summonerName = data.name
+      profile.accountId = data.accountId
       this.setState({profile})
       return data;
     }
@@ -188,37 +190,75 @@ class Profile extends React.Component {
       let goldS = 0;
       let currentmatch;
       let rankedCount = {"MID":0, "TOP":0, "SUPP":0, "BOT":0, "JG":0};
+
+      let selectMatch = {"MID":[], "TOP":[], "SUPP":[], "BOT":[], "JG":[]};
+
       if(data.matches != null && data.matches !== undefined){
         for(i = 0; i < data.matches.length; i++) {
-          if(i <= NUM_RECENT_MATCH){
-            currentmatch = await this.getMatchStats(data.matches[i]);
-            kills += currentmatch.kills;
-            deaths += currentmatch.deaths;
-            assists += currentmatch.assists;
-            cs += currentmatch.cs;
-            matchtime += currentmatch.matchtime;
-            kpS += currentmatch.compareKP;
-            dmgS += currentmatch.damageShare;
-            goldS += currentmatch.goldShare;
-            matchdata.push(currentmatch);
-  
-          }
           if (data.matches[i].lane.localeCompare('MID') === 0) {
             rankedCount["MID"] += 1;
+            selectMatch["MID"].push(i);
           }
           else if (data.matches[i].lane.localeCompare('JUNGLE') === 0) {
             rankedCount["JG"] += 1;
+            selectMatch["JG"].push(i);
           }
           else if (data.matches[i].lane.localeCompare('BOTTOM') === 0 && data.matches[i].role.localeCompare("DUO_CARRY") === 0) {
             rankedCount["BOT"] += 1;
+            selectMatch["BOT"].push(i);
           }
           else if (data.matches[i].lane.localeCompare('BOTTOM') === 0 && data.matches[i].role.localeCompare("DUO_SUPPORT") === 0) {
             rankedCount["SUPP"] += 1;
+            selectMatch["SUPP"].push(i);
           }
           else if (data.matches[i].lane.localeCompare('TOP') === 0) {
             rankedCount["TOP"] += 1;
+            selectMatch["TOP"].push(i);
           }
         }
+
+        let firstPref = Object.keys(rankedCount).reduce((a, b) => rankedCount[a] > rankedCount[b] ? a : b)
+        this.setState({prefRole: firstPref});
+
+        let dataset = []
+        switch(firstPref) {
+          case "MID":
+            dataset = selectMatch["MID"];
+            break;
+          case "JG":
+            dataset = selectMatch["JG"];
+            break;
+          case "BOT":
+            dataset = selectMatch["BOT"];
+            break;
+          case "SUPP":
+            dataset = selectMatch["SUPP"];
+            break;
+          case "TOP":
+            dataset = selectMatch["TOP"];
+            break;
+          default: 
+            dataset = selectMatch["MID"];
+        }
+        
+        if(dataset.length > NUM_RECENT_MATCH){
+          dataset = dataset.slice(0, NUM_RECENT_MATCH);
+        }
+
+        for(let i = 0; i < dataset.length; i++) {
+          currentmatch = await this.getMatchStats(data.matches[dataset[i]]);
+          kills += currentmatch.kills;
+          deaths += currentmatch.deaths;
+          assists += currentmatch.assists;
+          cs += currentmatch.cs;
+          matchtime += currentmatch.matchtime;
+          kpS += currentmatch.compareKP;
+          dmgS += currentmatch.damageShare;
+          goldS += currentmatch.goldShare;
+          matchdata.push(currentmatch);
+  
+        }
+
         kpS /= NUM_RECENT_MATCH;
         goldS /= NUM_RECENT_MATCH;
         dmgS /= NUM_RECENT_MATCH;
@@ -226,9 +266,12 @@ class Profile extends React.Component {
     
         let kda = (kills + assists) / deaths;
         let cspm = cs/matchtime*60;
+
         this.setState({stats: {kda: kda, cspm: cspm, kpS: kpS, goldS: goldS, dmgS: dmgS}});
-        let firstPref = Object.keys(rankedCount).reduce((a, b) => rankedCount[a] > rankedCount[b] ? a : b)
-        this.setState({prefRole: firstPref});
+        
+        
+
+
         let temp = rankedCount;
         delete temp[firstPref];
         let secondPref = Object.keys(temp).reduce((a, b) => temp[a] > temp[b] ? a : b)
@@ -258,15 +301,16 @@ class Profile extends React.Component {
     const matchdata = await response.json();
 
     let matchtime = matchdata.gameDuration;
-    let i = 0;
     let participantid = -1;
     let teamid = -1;
     let team100 = [];
     let team200 = [];
     let friendlyteam = []
+    await this.getProfile();
     for(let i = 0; i < 10; i++) {
       try{
-        if(this.cleanName(matchdata.participantIdentities[i].player.summonerName) === this.cleanName(this.state.query)){
+        if(matchdata.participantIdentities[i].player.accountId === this.state.profile.accountId){
+          
           participantid = i;
           teamid = matchdata.participants[i].teamId;
         }
@@ -319,13 +363,13 @@ class Profile extends React.Component {
   getTeamStats = (stats, friendlyteam) => {
     let totalkills = 0;
     let totalDamage = 0;
-    let totalDamageTurrets = 0;
+    //let totalDamageTurrets = 0;
     let totalGold = 0;
 
     for(let i = 0; i < friendlyteam.length; i++) {
       totalkills += friendlyteam[i].kills;
       totalDamage += friendlyteam[i].magicDamageDealtToChampions + friendlyteam[i].physicalDamageDealtToChampions + friendlyteam[i].trueDamageDealtToChampions;
-      totalDamageTurrets += friendlyteam[i].damageDealtToTurrets;
+      //totalDamageTurrets += friendlyteam[i].damageDealtToTurrets;
       totalGold += friendlyteam[i].goldEarned;
     }
 
@@ -374,10 +418,7 @@ class Profile extends React.Component {
     const kpS = this.state.stats.kpS;
     const dmgS = this.state.stats.dmgS;
     const role = this.state.role;
-    const closeStyle = {
-      height: "100%",
 
-    };
     if(!this.state.cached) {
       if(summonerName != null && tier != null && lp != null && cspm != null && kda != null && prefRole != null && prefRole2 != null && role != null) {
         this.setState({cached: true})
@@ -446,7 +487,7 @@ class Profile extends React.Component {
                 <form className="summonersearch" onSubmit={this.handleSubmit}>
                   <Grid container spacing={3} alignItems="center">
                     <Grid item xs={12} sm={9}>
-                      <TextField id="standard-basic" label="Summoner Name" onChange={this.handleChange} fullWidth="true" defaultValue={this.state.query}/>
+                      <TextField id={this.props.id} label="Summoner Name" onChange={this.handleChange} fullWidth="true" defaultValue={this.state.query}/>
                     </Grid>
                     <Grid item xs={12} sm={3}>
                       <Button type="submit">Submit</Button>

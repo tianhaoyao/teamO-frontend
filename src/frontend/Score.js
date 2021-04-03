@@ -14,49 +14,37 @@ function Score(props) {
 
     const [score, setScore] = useState(0);
     const [descriptor, setDescriptor] = useState("");
-    const [name, setName] = useState("");
-    const [pref, setPref] = useState("");
-    const [pref2, setPref2] = useState("");
     const [stat, setStat] = useState([]);
 
     useEffect(() => {
+        function calculate() {
+            let name = props.name;
+            
+            let baseScore = rankData.rankScore[props.tier][props.division];
+            let lpScore = props.lp * rankData.lpMultiplier[props.tier];
+    
+            if(props.tier === "MASTER" || props.tier === "GRANDMASTER" || props.tier === "CHALLENGER") {
+                lpScore = Math.pow(lpScore, 1.07);
+            }
+            let stats = bonus();
+            let bonusScore = stats[0];
+            let descriptor = stats[1];
+            let stat = stats[2];
+            let finalScore = Math.round(baseScore + lpScore + bonusScore);
+            let pref = props.pref;
+            let pref2 = props.pref2;
+    
+            setScore(finalScore);
+            setDescriptor(descriptor);
+            setStat(stat);
+    
+            dispatch(updatePlayer(name, finalScore, pref, pref2, props.tier, props.division, descriptor, stat));
+    
+            return finalScore;
+        };
         calculate();
-    }, []);
+    }, [props.division, props.lp, props.name, props.pref, props.pref2, props.tier]);
 
-
-
-
-    function calculate() {
-        let name = props.name;
-        
-        let baseScore = rankData.rankScore[props.tier][props.division];
-        let lpScore = props.lp * rankData.lpMultiplier[props.tier];
-
-        if(props.tier === "MASTER" || props.tier === "GRANDMASTER" || props.tier === "CHALLENGER") {
-            lpScore = Math.pow(lpScore, 1.07);
-        }
-        let stats = bonus();
-        let bonusScore = stats[0];
-        let descriptor = stats[1];
-        let stat = stats[2];
-        let finalScore = Math.round(baseScore + lpScore + bonusScore);
-        let pref = props.pref;
-        let pref2 = props.pref2;
-
-        setName(name);
-        setScore(finalScore);
-        setPref(pref);
-        setPref2(pref2);
-        setDescriptor(descriptor);
-        setStat(stat);
-
-        dispatch(updatePlayer(name, finalScore, pref, pref2, props.tier, props.division, descriptor, stat));
-
-        return finalScore;
-
-
-
-    }
 
     function getKDABonus() {
         let multiplier = 0.7;
@@ -114,7 +102,7 @@ function Score(props) {
         if (props.pref === "SUPP" || props.pref === "JG") {
             kpbonus *= 1.4;
         }
-        else if (props.pref == "TOP" && kpbonus <= 0) {
+        else if (props.pref === "TOP" && kpbonus <= 0) {
             kpbonus *= 0.4;
         }
 
@@ -205,6 +193,9 @@ function Score(props) {
             case dmgbonus: 
                 descriptor = "Aggressive";
                 break;
+            
+            default:
+                descriptor = "All round";
         }
         
 

@@ -1,18 +1,10 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 
 import {Container, Grid} from '@material-ui/core'
 
 import Sort from './Sort';
 import Results from './Results';
 import TotalScore from './TotalScore';
-
-import {useSelector} from 'react-redux';
-import scoreReducer from './reducers/scoreCollection';
-import teamReducer from './reducers/teamReducer';
-import { PinDropSharp } from '@material-ui/icons';
-
-
 
 function Show(props){
     return (

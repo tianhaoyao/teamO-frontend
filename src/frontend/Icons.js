@@ -16,9 +16,9 @@ function Icons(props){
     return(
         <div>
             {props.tier === "UNRANKED" ?
-                <img style={style} src={require(`./resources/ranks/default.png`)}></img>
+                <img style={style} src={require(`./resources/ranks/default.png`)} alt="Unranked"></img>
             :
-                <img style={style} src={require(`./resources/ranks/${props.tier}_${divisionLookup[props.division]}.png`)}></img>
+                <img style={style} src={require(`./resources/ranks/${props.tier}_${divisionLookup[props.division]}.png`)} alt={props.tier}></img>
             }
         </div>
     );

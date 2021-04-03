@@ -1,19 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import logo from './resources/teamo.png'
-import ReactDOM from 'react-dom';
 
 
-import {Container, Grid, Divider, Switch, Typography, ThemeProvider, TextField, Button, Tooltip} from '@material-ui/core'
-import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import {Container, Grid, Switch, Typography, ThemeProvider, TextField, Button, Tooltip} from '@material-ui/core'
+import { createMuiTheme } from '@material-ui/core/styles';
 import CssBaseline from "@material-ui/core/CssBaseline";
 
 import Profile from './Profile';
 import Show from './Show';
-
-import {useSelector} from 'react-redux';
-import scoreReducer from './reducers/scoreCollection';
-import teamReducer from './reducers/teamReducer';
-import { LiveTvRounded } from '@material-ui/icons';
 
 
 function App(){
@@ -80,8 +74,6 @@ function App(){
   const [night, setNight] = React.useState(false);
   const [theme, setTheme] = React.useState(lighttheme);
    
-   const [showScores, setShowScores] = React.useState(false);
-   const onClick = () => setShowScores(!showScores);
    const changeNight = () => {
      setNight(!night);
      if(night) {
@@ -101,7 +93,7 @@ function App(){
         <Container maxWidth="md"> 
           <Grid container item xs={12} justify="center">
             
-            <img src={logo}></img>
+            <img src={logo} alt="Logo"></img>
             
             
           </Grid>
@@ -130,43 +122,43 @@ function App(){
           {multiSub ? 
           <Grid container spacing={3}>
             <Grid item xs={12} sm={6}>
-              <Profile player={multi[0]}/>
+              <Profile player={multi[0]} id="b0"/>
             </Grid>
     
             <Grid item xs={12} sm={6}>
-              <Profile player={multi[1]}/>
+              <Profile player={multi[1]} id="r0"/>
             </Grid>
             
             <Grid item xs={12} sm={6}>
-              <Profile player={multi[2]}/>
+              <Profile player={multi[2]} id="b1"/>
             </Grid>
     
             <Grid item xs={12} sm={6}>
-              <Profile player={multi[3]}/>
+              <Profile player={multi[3]} id="r1"/>
             </Grid>
             
             <Grid item xs={12} sm={6}>
-              <Profile player={multi[4]}/>
+              <Profile player={multi[4]} id="b2"/>
             </Grid>
     
             <Grid item xs={12} sm={6}>
-              <Profile player={multi[5]}/>
+              <Profile player={multi[5]} id="r2"/>
             </Grid>
             
             <Grid item xs={12} sm={6}>
-              <Profile player={multi[6]}/>
+              <Profile player={multi[6]} id="b3"/>
             </Grid>
     
             <Grid item xs={12} sm={6}>
-              <Profile player={multi[7]}/>
+              <Profile player={multi[7]} id="r3"/>
             </Grid>
             
             <Grid item xs={12} sm={6}>
-              <Profile player={multi[8]}/>
+              <Profile player={multi[8]} id="b4"/>
             </Grid>
     
             <Grid item xs={12} sm={6}>
-              <Profile player={multi[9]}/>
+              <Profile player={multi[9]} id="r4"/>
             </Grid>
           </Grid>
           :
