@@ -40,7 +40,18 @@ function StatsGraph(props) {
               right: -10,
               bottom: -30
             }
-        }
+        },
+        tooltip: {
+            y: {
+                formatter: function(val) {
+                    return val + "/100"
+                }
+            },
+            x: {
+                show: false
+            },
+            followCursor: false
+        },
 
         
     };
