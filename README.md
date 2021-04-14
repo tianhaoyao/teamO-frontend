@@ -5,7 +5,7 @@ React Webapp that divides summoners into even teams, deployed on AWS Amplify & H
 
 __This repository serves as the frontend for the project. You can find the backend repo here: https://github.com/tianhaoyao/teamO__
 
-Try it out here: https://www.teamoo.tk/
+Try it out here: https://teem0.herokuapp.com/
 
 ## How it works
 
