@@ -7,6 +7,8 @@ __This repository serves as the frontend for the project. You can find the backe
 
 Try it out here: https://teem0.herokuapp.com/
 
+If the above link does not work: https://main.d2ppo6en99m27e.amplifyapp.com/
+
 ## How it works
 
 1. Grabs a variety of stats using Riot API to calculate a score for each player (see below)
